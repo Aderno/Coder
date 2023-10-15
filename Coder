@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text Encoder and Decoder</title>
+</head>
+<body>
+    <h1>Text Encoder and Decoder</h1>
+
+    <textarea id="inputText" placeholder="Enter English text"></textarea>
+    <button onclick="encodeText()">Encode</button>
+    <button onclick="decodeText()">Decode</button>
+    <br>
+    <p>Encoded Text:</p>
+    <div id="encodedText"></div>
+    <p>Decoded Text:</p>
+    <div id="decodedText"></div>
+
+    <script>
+        // Function to encode text to numbers
+        function encodeText() {
+            const inputText = document.getElementById("inputText").value;
+            let encodedText = "";
+            for (let i = 0; i < inputText.length; i++) {
+                encodedText += inputText.charCodeAt(i) + " ";
+            }
+            document.getElementById("encodedText").innerText = encodedText;
+        }
+
+        // Function to decode numbers to text
+        function decodeText() {
+            const encodedText = document.getElementById("encodedText").innerText;
+            const encodedArray = encodedText.trim().split(" ");
+            let decodedText = "";
+            for (let i = 0; i < encodedArray.length; i++) {
+                const charCode = parseInt(encodedArray[i]);
+                if (!isNaN(charCode)) {
+                    decodedText += String.fromCharCode(charCode);
+                }
+            }
+            document.getElementById("decodedText").innerText = decodedText;
+        }
+    </script>
+</body>
+</html>
