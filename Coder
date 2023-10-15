@@ -2,42 +2,125 @@
 <html>
 <head>
     <title>Text Encoder and Decoder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: left;
+            background-color: #f2f2f2;
+            position: relative; /* Allows for positioning elements within the body */
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+        textarea, button {
+            width: 100%;
+            box-sizing: border-box;
+            margin: 10px 0;
+            padding: 10px;
+        }
+        textarea[readonly], button {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .animated-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .animated-background::before {
+            content: "";
+            background: linear-gradient(45deg, #3498db, #e74c3c, #9b59b6, #e74c3c);
+            background-size: 400% 400%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            animation: gradientBackground 15s ease infinite;
+        }
+        @keyframes gradientBackground {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        .name {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 10px;
+            color: #888;
+        }
+    </style>
 </head>
 <body>
     <h1>Text Encoder and Decoder</h1>
 
-    <textarea id="inputText" placeholder="Enter English text"></textarea>
-    <button onclick="encodeText()">Encode</button>
-    <button onclick="decodeText()">Decode</button>
-    <br>
-    <p>Encoded Text:</p>
-    <div id="encodedText"></div>
-    <p>Decoded Text:</p>
-    <div id="decodedText"></div>
+    <div class="container">
+        <div>
+            <h2>Encoder</h2>
+            <textarea id="inputText" placeholder="Enter English text"></textarea>
+            <button onclick="encodeText()">Encode</button>
+            <br>
+            <p>Encoded Text:</p>
+            <textarea id="encodedText" readonly></textarea>
+        </div>
+
+        <div>
+            <h2>Decoder</h2>
+            <textarea id="encodedText2" placeholder="Paste the encoded text here"></textarea>
+            <button onclick="decodeText()">Decode</button>
+            <br>
+            <p>Decoded Text:</p>
+            <textarea id="decodedText" readonly></textarea>
+        </div>
+    </div>
+
+    <!-- Background Animation -->
+    <div class="animated-background"></div>
+    
+    <!-- Name -->
+    <div class="name">Akshat</div>
 
     <script>
         // Function to encode text to numbers
         function encodeText() {
             const inputText = document.getElementById("inputText").value;
-            let encodedText = "";
-            for (let i = 0; i < inputText.length; i++) {
-                encodedText += inputText.charCodeAt(i) + " ";
-            }
-            document.getElementById("encodedText").innerText = encodedText;
+            const encodedText = inputText.split('').map(char => char.charCodeAt(0)).join(',');
+            document.getElementById("encodedText").value = encodedText;
         }
 
-        // Function to decode numbers to text
+        // Function to decode numbers from the provided text
         function decodeText() {
-            const encodedText = document.getElementById("encodedText").innerText;
-            const encodedArray = encodedText.trim().split(" ");
-            let decodedText = "";
-            for (let i = 0; i < encodedArray.length; i++) {
-                const charCode = parseInt(encodedArray[i]);
-                if (!isNaN(charCode)) {
-                    decodedText += String.fromCharCode(charCode);
-                }
-            }
-            document.getElementById("decodedText").innerText = decodedText;
+            const encodedText = document.getElementById("encodedText2").value;
+            const encodedArray = encodedText.split(',').map(Number);
+            let decodedText = String.fromCharCode(...encodedArray);
+            document.getElementById("decodedText").value = decodedText;
         }
     </script>
 </body>
